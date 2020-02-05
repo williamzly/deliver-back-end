@@ -9,14 +9,16 @@ import java.util.List;
 @Data
 public class ArrayResponseDTO extends ResponseDTO {
 
-    private List<Object> list;
+    private List<?> list;
 
-    public ArrayResponseDTO(List<Object> list) {
+    private ArrayResponseDTO() {}
+
+    public ArrayResponseDTO(List<?> list) {
         super();
         this.list = list;
     }
 
-    public ArrayResponseDTO(Integer code, String message, List<Object> list) {
+    public ArrayResponseDTO(Integer code, String message, List<?> list) {
         super(code, message);
         this.list = list;
     }

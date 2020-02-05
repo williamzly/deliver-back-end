@@ -15,4 +15,14 @@ public enum DemandStatus {
     public String getName() {
         return name;
     }
+
+    public boolean isBehind(DemandStatus anotherStatus) {
+        if (anotherStatus == null || this == PENDING) {
+            return false;
+        } else if (this == ONGOING) {
+            return anotherStatus == PENDING;
+        } else {
+            return anotherStatus == ONGOING;
+        }
+    }
 }

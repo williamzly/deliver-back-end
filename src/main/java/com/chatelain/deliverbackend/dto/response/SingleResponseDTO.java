@@ -9,6 +9,14 @@ public class SingleResponseDTO extends ResponseDTO {
 
     private Object data;
 
+    public SingleResponseDTO() {
+        super();
+    }
+
+    public SingleResponseDTO(Integer code, String message) {
+        super(code, message);
+    }
+
     public SingleResponseDTO(Object data) {
         super();
         this.data = data;

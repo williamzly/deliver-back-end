@@ -4,6 +4,7 @@ import com.chatelain.deliverbackend.enums.DemandStatus;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
 public class Record {
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     private DemandStatus changedStatus;

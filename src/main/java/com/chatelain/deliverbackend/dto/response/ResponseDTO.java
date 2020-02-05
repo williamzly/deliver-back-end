@@ -16,12 +16,12 @@ public abstract class ResponseDTO {
     protected static final String DEFAULT_MESSAGE = "";
 
 
-    protected ResponseDTO() {
+    ResponseDTO() {
         this.code = DEFAULT_CODE;
         this.message = DEFAULT_MESSAGE;
     }
 
-    protected ResponseDTO(Integer code, String message) {
+    ResponseDTO(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

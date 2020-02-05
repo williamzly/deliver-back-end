@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.chatelain</groupId>
     <artifactId>deliver-back-end</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>deliver-back-end</name>
     <description>杭州滨江区疫情社工服务小程序</description>
 
