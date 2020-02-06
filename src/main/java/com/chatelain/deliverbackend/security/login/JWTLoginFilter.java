@@ -32,7 +32,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        System.out.println("JWTLoginFilter");
         try {
             MiniProgramUser user = new ObjectMapper().readValue(request.getInputStream(), MiniProgramUser.class);
             return authenticationManager.authenticate(new WXCodeToken(user.getCode()));
@@ -44,7 +43,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String token = Jwts.builder()
-                .setSubject((String)(authResult.getDetails()))
+                .setSubject((Integer)(authResult.getDetails()) + "")
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000))
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();

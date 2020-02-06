@@ -1,20 +1,44 @@
 package com.chatelain.deliverbackend.security.login;
 
+import com.chatelain.deliverbackend.entity.Account;
+import com.chatelain.deliverbackend.exception.ExternalHttpException;
+import com.chatelain.deliverbackend.service.UserService;
+import com.chatelain.deliverbackend.utils.wx.Code2SessionResponse;
+import com.chatelain.deliverbackend.utils.wx.WXRequestTool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class WXCodeAuthenticationProvider implements AuthenticationProvider {
 
+    @Autowired
+    private WXRequestTool wxRequestTool;
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         WXCodeToken wxCodeToken = (WXCodeToken)authentication;
-        System.out.println("WXCodeAuthenticationProvider::wxCode:: "+ wxCodeToken.getWxCode());
-        // TODO 补写验证微信小程序code -> openid等数据 如果是不存在的，这创建Account
+
+        Code2SessionResponse code2SessionResponse;
+        try {
+            code2SessionResponse = wxRequestTool.codeToSession(wxCodeToken.getWxCode());
+        } catch (ExternalHttpException e) {
+            throw new AuthenticationServiceException(e.getMessage(), e);
+        }
+        String openid = code2SessionResponse.getOpenid();
+        if(StringUtils.isEmpty(openid)){
+            throw new AuthenticationServiceException("openid is empty");
+        }
+        Account account = userService.getOrCreateAccountByOpenid(openid);
         wxCodeToken.setAuthenticated(true);
-        wxCodeToken.setDetails("zxcvbnm");
+        wxCodeToken.setDetails(account.getId());
         return wxCodeToken;
     }
 

@@ -38,7 +38,6 @@ public class DemandController {
     public ResponseDTO getDemands(@Validated GetDemandsDTO getDemandsDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account account = (Account) authentication.getDetails();
-        System.out.println(account);
         List<Demand> demands = demandService.getDemandsByStatus(getDemandsDTO.getDemandStatus());
         return new ArrayResponseDTO(demands);
     }

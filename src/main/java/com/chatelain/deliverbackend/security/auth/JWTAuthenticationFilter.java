@@ -1,7 +1,8 @@
 package com.chatelain.deliverbackend.security.auth;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -21,29 +22,33 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
  
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("JWTAuthenticationFilter");
         String header = request.getHeader(JWT_HEAD);
  
         if (header == null || !header.startsWith(JWT_HEAD_START)) {
             chain.doFilter(request, response);
             return;
         }
-        OpenidToken token = parse(request);
+        IdToken token = parse(request);
         SecurityContextHolder.getContext().setAuthentication(token);
         chain.doFilter(request, response);
     }
  
-    private OpenidToken parse(HttpServletRequest request) {
+    private IdToken parse(HttpServletRequest request) {
         String token = request.getHeader(JWT_HEAD);
         if (token != null) {
-            String openid = Jwts.parser()
-                    .setSigningKey(JWT_SECRET)
-                    .parseClaimsJws(token.replace(JWT_HEAD_START, ""))
-                    .getBody()
-                    .getSubject();
- 
-            if (openid != null) {
-                return new OpenidToken(openid);
+            String idStr = null;
+            try {
+                idStr = Jwts.parser()
+                        .setSigningKey(JWT_SECRET)
+                        .parseClaimsJws(token.replace(JWT_HEAD_START, ""))
+                        .getBody()
+                        .getSubject();
+            } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+                throw new AuthenticationServiceException("wrong token" ,e);
+            }
+
+            if (idStr != null) {
+                return new IdToken(Integer.parseInt(idStr));
             }
             return null;
         }

@@ -1,10 +1,9 @@
 package com.chatelain.deliverbackend.security;
 
 import com.chatelain.deliverbackend.security.auth.JWTAuthenticationFilter;
-import com.chatelain.deliverbackend.security.auth.OpenidAuthenticationProvider;
+import com.chatelain.deliverbackend.security.auth.IdAuthenticationProvider;
 import com.chatelain.deliverbackend.security.login.JWTLoginFilter;
 import com.chatelain.deliverbackend.security.login.WXCodeAuthenticationProvider;
-import com.chatelain.deliverbackend.service.UserService;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -22,15 +21,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final WXCodeAuthenticationProvider wxCodeAuthenticationProvider;
 
-    private final OpenidAuthenticationProvider openidAuthenticationProvider;
+    private final IdAuthenticationProvider idAuthenticationProvider;
 
-    public WebSecurityConfig(WXCodeAuthenticationProvider wxCodeAuthenticationProvider, OpenidAuthenticationProvider openidAuthenticationProvider) {
+    public WebSecurityConfig(WXCodeAuthenticationProvider wxCodeAuthenticationProvider, IdAuthenticationProvider idAuthenticationProvider) {
         this.wxCodeAuthenticationProvider = wxCodeAuthenticationProvider;
-        this.openidAuthenticationProvider = openidAuthenticationProvider;
+        this.idAuthenticationProvider = idAuthenticationProvider;
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers(PERMITTED_PAGE_PATH);
     }
 
@@ -41,13 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JWTLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()));
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+        .exceptionHandling().authenticationEntryPoint(new SimpleAuthenticationEntryPoint());
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    public void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(wxCodeAuthenticationProvider)
-            .authenticationProvider(openidAuthenticationProvider);
+            .authenticationProvider(idAuthenticationProvider);
     }
 
 }
