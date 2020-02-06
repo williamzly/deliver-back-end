@@ -32,7 +32,7 @@ public class SwaggerConfig {
                 "",
                 "API V1.0",
                 "",
-                new Contact("名字想好没", "https://itweknow.cn", "gancy.programmer@gmail.com"),
-                "Apache", "http://www.apache.org/", Collections.emptyList());
+                new Contact("William", "https://williamzly.github.io", "williameezly@gmail.com"),
+                "Chatelain", "", Collections.emptyList());
     }
 }

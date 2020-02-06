@@ -1,5 +1,6 @@
 package com.chatelain.deliverbackend.entity;
 
+import com.chatelain.deliverbackend.enums.RoleType;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ public class Account {
     @GeneratedValue
     private Integer id;
 
-    private Integer roleType;
+    private RoleType roleType;
 
     private String openid;
 

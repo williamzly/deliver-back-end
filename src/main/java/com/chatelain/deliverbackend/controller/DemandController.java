@@ -11,6 +11,8 @@ import com.chatelain.deliverbackend.enums.DemandStatus;
 import com.chatelain.deliverbackend.service.DemandService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,9 @@ public class DemandController {
 
     @GetMapping
     public ResponseDTO getDemands(@Validated GetDemandsDTO getDemandsDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account account = (Account) authentication.getDetails();
+        System.out.println(account);
         List<Demand> demands = demandService.getDemandsByStatus(getDemandsDTO.getDemandStatus());
         return new ArrayResponseDTO(demands);
     }

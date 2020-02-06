@@ -2,7 +2,9 @@ package com.chatelain.deliverbackend.enums;
 
 public enum DemandType {
 
-    PULL("取外卖"),
+    TAKEAWAY("取外卖"),
+    TRACKING("领快递"),
+    TRASH("倒垃圾"),
     BUY("买东西"),
     OTHERS("其它");
 
