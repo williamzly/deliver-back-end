@@ -36,7 +36,7 @@ public class WXCodeAuthenticationProvider implements AuthenticationProvider {
         if(StringUtils.isEmpty(openid)){
             throw new AuthenticationServiceException("openid is empty");
         }
-        Account account = userService.getOrCreateAccountByOpenid(openid);
+        Account account = userService.updateOrCreateAccountByOpenidAndSessionKey(openid, code2SessionResponse.getSession_key());
         wxCodeToken.setAuthenticated(true);
         wxCodeToken.setDetails(account.getId());
         return wxCodeToken;

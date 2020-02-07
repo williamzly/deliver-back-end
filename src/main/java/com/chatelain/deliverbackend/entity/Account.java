@@ -20,7 +20,15 @@ public class Account {
 
     private String openid;
 
-    private String mobile;
+    private String name;
+
+    private String address;
+
+    private String contact;
+
+    private String lastSessionKey;
 
     private Date firstLogin;
+
+    private Date lastLogin;
 }

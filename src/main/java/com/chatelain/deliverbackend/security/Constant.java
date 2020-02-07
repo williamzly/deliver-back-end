@@ -4,7 +4,7 @@ public class Constant {
 
     public static final String JWT_HEAD = "Authorization";
 
-    public static final String JWT_HEAD_START = "zhurong-deliver ";
+    public static final String JWT_HEAD_START = "Bearer ";
 
     public static final String JWT_SECRET = "chatelain";
 

@@ -19,16 +19,20 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public Account getOrCreateAccountByOpenid(String openid) {
+    public Account updateOrCreateAccountByOpenidAndSessionKey(String openid, String sessionKey) {
 
         Account found = userRepository.findAccountByOpenid(openid);
+        Date now = new Date();
         if(Objects.nonNull(found)) {
+            found.setLastLogin(now);
+            found.setLastSessionKey(sessionKey);
             return found;
         }else {
             Account toCreate = new Account();
             toCreate.setOpenid(openid);
             toCreate.setRoleType(RoleType.VISITOR);
-            toCreate.setFirstLogin(new Date());
+            toCreate.setFirstLogin(now);
+            toCreate.setLastSessionKey(sessionKey);
             return userRepository.save(toCreate);
         }
     }
