@@ -36,7 +36,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     private IdToken parse(HttpServletRequest request) {
         String token = request.getHeader(JWT_HEAD);
         if (token != null) {
-            String idStr = null;
+            String idStr;
             try {
                 idStr = Jwts.parser()
                         .setSigningKey(JWT_SECRET)
