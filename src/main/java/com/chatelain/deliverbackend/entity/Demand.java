@@ -20,12 +20,6 @@ public class Demand {
 
     private DemandType demandType;
 
-    private String username;
-
-    private String address;
-
-    private String contact;
-
     private String detail;
 
     private DemandStatus demandStatus;

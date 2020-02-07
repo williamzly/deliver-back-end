@@ -22,7 +22,11 @@ public class Account {
 
     private String name;
 
-    private String address;
+    private String room;
+
+    private String village;
+
+    private String community;
 
     private String contact;
 

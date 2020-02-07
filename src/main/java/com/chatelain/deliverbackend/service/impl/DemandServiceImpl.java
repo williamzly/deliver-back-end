@@ -46,7 +46,7 @@ public class DemandServiceImpl implements DemandService {
     }
 
     @Override
-    public Demand updateDemandStatus(Integer demandId, DemandStatus forUpdate, Account worker) {
+    public Demand updateDemandStatus(Integer demandId, DemandStatus forUpdate, Account agent) {
         Optional<Demand> optional = demandRepository.findById(demandId);
         if(optional.isPresent()) {
             Demand toUpdate = optional.get();
@@ -55,7 +55,7 @@ public class DemandServiceImpl implements DemandService {
             }
             toUpdate.setDemandStatus(forUpdate);
 
-            Record record = generateRecord(forUpdate, toUpdate.getCreator(), worker, toUpdate, new Date());
+            Record record = generateRecord(forUpdate, toUpdate.getCreator(), agent, toUpdate, new Date());
             recordRepository.save(record);
 
             return toUpdate;
@@ -64,12 +64,12 @@ public class DemandServiceImpl implements DemandService {
     }
 
 
-    private Record generateRecord(DemandStatus changedStatus, Account user, Account worker, Demand demand, Date now) {
+    private Record generateRecord(DemandStatus changedStatus, Account customer, Account agent, Demand demand, Date now) {
         Record record = new Record();
         record.setDemand(demand);
         record.setChangedStatus(changedStatus);
-        record.setUser(user);
-        record.setWorker(worker);
+        record.setCustomer(customer);
+        record.setAgent(agent);
         record.setTime(now);
         return record;
     }

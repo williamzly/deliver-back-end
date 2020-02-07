@@ -25,15 +25,6 @@ public class DemandController {
     @Autowired
     private DemandService demandService;
 
-    // mock data
-    private Account mockUser = new Account();
-    private Account mockWorker = new Account();
-
-    {
-        mockUser.setId(1);
-        mockWorker.setId(2);
-    }
-
     @GetMapping
     public ResponseDTO getDemands(@Validated GetDemandsDTO getDemandsDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,13 +37,15 @@ public class DemandController {
     public ResponseDTO createDemand(@Validated @RequestBody DemandFormDTO form) {
         Demand toCreate = new Demand();
         BeanUtils.copyProperties(form, toCreate);
-        Demand saved = demandService.createDemand(toCreate, mockUser);
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        Demand saved = demandService.createDemand(toCreate, account);
         return new SingleResponseDTO(saved);
     }
 
     @PatchMapping("/{id}")
     public ResponseDTO updateDemandStatus(@PathVariable Integer id, @RequestBody DemandStatus forUpdate) {
-        Demand saved = demandService.updateDemandStatus(id, forUpdate, mockWorker);
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        Demand saved = demandService.updateDemandStatus(id, forUpdate, account);
         return new SingleResponseDTO(saved);
     }
 

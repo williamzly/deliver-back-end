@@ -22,10 +22,10 @@ public class Record {
     private Date time;
 
     @OneToOne
-    private Account user;
+    private Account customer;
 
     @OneToOne
-    private Account worker;
+    private Account agent;
 
     @OneToOne
     private Demand demand;
